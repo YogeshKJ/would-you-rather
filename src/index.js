@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createRoot } from 'react-dom/client';
 
 // bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,15 +14,16 @@ import middleware from './middleware'
 
 
 const store = createStore(reducer, middleware)
+const container = document.getElementById('root');
+const root = createRoot(container);
 
-ReactDOM.render(
+root.render(
   <Provider store={store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-  </Provider>,
-  document.getElementById('root')
-);
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
