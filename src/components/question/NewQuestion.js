@@ -33,7 +33,7 @@ function NewQuestion({ dispatch, authedUser }) {
                     <Card.Title>Would You Rather ...</Card.Title>
 
                     <Form
-                        onSubmit={event => handleSubmit(event)}
+                        onSubmit={handleSubmit}
                     >
                         <Form.Group className="mb-3" controlId="questionOne">
                             <Form.Control placeholder="Enter Option One Text Here" />
@@ -66,6 +66,10 @@ function NewQuestion({ dispatch, authedUser }) {
     )
 }
 
-export default connect(state => ({
-    authedUser: state.authedUser
-}))(NewQuestion)
+function mapStateToProps({authedUser}) {
+    return {
+        authedUser
+    }
+}
+
+export default connect(mapStateToProps)(NewQuestion)

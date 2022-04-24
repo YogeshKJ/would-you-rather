@@ -1,6 +1,9 @@
-# Getting Started with Create React App
+# Would You Rather
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project gives you a would you rather game.
+"Would you rather" is a conversation or party game that poses a dilemma in the form of a question beginning with "would you rather".
+You can login, answer exsisting question, check your names and the percentage of people who voted, and creat your own questions and check the leaderboard.
+Enjoy!!
 
 ## Available Scripts
 

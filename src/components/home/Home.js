@@ -11,25 +11,12 @@ import TabPanel from '@mui/lab/TabPanel';
 
 import UnansweredQuestions from './UnansweredQuestions'
 import AnsweredQuestions from './AnsweredQuestions'
-import Poll from './Poll';
 
 export default function Home() {
     const [value, setValue] = useState('1');
-    const [displayPoll, setDisplayPoll] = useState(false)
-    const [pollKey, setPollKey] = useState('')
 
     const handleChange = (event, value) => {
         setValue(value)
-    }
-
-    const handleClick = (key) => {
-        setPollKey(key)
-        setDisplayPoll(true)
-    }
-    if (displayPoll) {
-        return (
-            <Poll qid={pollKey} />
-        )
     }
 
     return (
@@ -54,8 +41,7 @@ export default function Home() {
                         </TabList>
                     </Box>
                     <TabPanel value="1">
-                        <UnansweredQuestions
-                            handleClick={handleClick} />
+                        <UnansweredQuestions />
                     </TabPanel>
                     <TabPanel value="2">
                         <AnsweredQuestions />

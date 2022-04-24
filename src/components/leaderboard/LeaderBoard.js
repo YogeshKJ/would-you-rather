@@ -3,17 +3,11 @@ import { connect } from "react-redux";
 
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button'
 import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 
-function LeaderBoard({ users }) {
-    const keys = Object.keys(users).sort((a, b) => (users[b].questions.length + Object.keys(users[b].answers).length) -
-        (users[b].questions.length + Object.keys(users[a].answers).length))
-
-    console.log(keys)
-
+function LeaderBoard({ users, keys }) {
     return (
         <Grid
             container
@@ -49,8 +43,8 @@ function LeaderBoard({ users }) {
                                     <b>{users[key].name}</b>
                                 </Grid>
                                 <Grid item>
-                                    <p>Answered questions   {users[key].questions.length}</p>
-                                    <p>Created questions    {Object.keys(users[key].answers).length}</p>
+                                    <p>Answered questions   {Object.keys(users[key].answers).length}</p>
+                                    <p>Created questions    {users[key].questions.length}</p>
                                 </Grid>
                             </Grid>
 
@@ -71,6 +65,12 @@ function LeaderBoard({ users }) {
     )
 }
 
-export default connect(state => ({
-    users: state.users
-}))(LeaderBoard)
+function mapStateToProps({ users }) {
+    return {
+        users,
+        keys: Object.keys(users).sort((a, b) => (users[b].questions.length + Object.keys(users[b].answers).length) -
+            (users[b].questions.length + Object.keys(users[a].answers).length))
+    }
+}
+
+export default connect(mapStateToProps)(LeaderBoard)

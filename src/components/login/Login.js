@@ -16,8 +16,9 @@ function Login({ users, dispatch}) {
     const [id, setId] = React.useState('');
     const [isDisabled, setIsDisabled] = React.useState(true)
 
+
     useEffect(() => {
-        id && window.localStorage.setItem('authedUser', JSON.stringify(id))
+        id && sessionStorage.setItem('authedUser', JSON.stringify(id))
     }, [id])
 
     const handleSelection = event => {
@@ -79,6 +80,10 @@ function Login({ users, dispatch}) {
     )
 }
 
-export default connect(state => ({
-    users: state.users,
-}))(Login)
+function mapStateToProps({users}) {
+    return {
+        users
+    }
+}
+
+export default connect(mapStateToProps)(Login)

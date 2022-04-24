@@ -16,7 +16,8 @@ function CustomNavbar({ authedUser, users, dispatch }) {
 
     useEffect(() => {
         if (logout) {
-            localStorage.removeItem('authedUser')
+            sessionStorage.removeItem('authedUser')
+            sessionStorage.removeItem('qid')
             dispatch(setAuthedUser(''))
             setLogout(false)
         }
@@ -29,7 +30,7 @@ function CustomNavbar({ authedUser, users, dispatch }) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/newquestion">New Question</Nav.Link>
+                        <Nav.Link href="/add">New Question</Nav.Link>
                         <Nav.Link href="/leaderboard">Leader Board</Nav.Link>
                     </Nav>
                     <Nav>
@@ -49,7 +50,11 @@ function CustomNavbar({ authedUser, users, dispatch }) {
     )
 }
 
-export default connect(state => ({
-    authedUser: state.authedUser,
-    users: state.users
-}))(CustomNavbar) 
+function mapStateToProps({ authedUser, users }) {
+    return {
+        authedUser,
+        users
+    }
+}
+
+export default connect(mapStateToProps)(CustomNavbar) 

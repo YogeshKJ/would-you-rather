@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+
 import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button'
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Card from "@mui/material/Card";
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
 
 
-function Questions({ users, question, authedUser, type, handleClick }) {
-    const questionList = Object.keys(question).filter(key => !Object.keys(users[authedUser].answers).map(key => key).includes(key))
+function Questions({ users, question, questionList }) {
+    const [qid, setQid] = useState('')
+
+    useEffect(() => {
+        qid && sessionStorage.setItem('qid', JSON.stringify(qid))
+    }, [qid])
 
     return (
         <Grid container direction='column' sx={{ rowGap: 2 }} >
@@ -45,7 +40,8 @@ function Questions({ users, question, authedUser, type, handleClick }) {
                                 <Button
                                     variant="contained"
                                     size="small"
-                                    onClick={() => handleClick(key, question[key].author)}
+                                    onClick={() => setQid(key)}
+                                    href={`/questions/${key}`}
                                 >
                                     View Poll
                                 </Button>
@@ -59,10 +55,14 @@ function Questions({ users, question, authedUser, type, handleClick }) {
     )
 }
 
-export default connect((state, type, handleClick) => ({
-    users: state.users,
-    question: state.question,
-    authedUser: state.authedUser,
-    ...type,
-    ...handleClick
-}))(Questions)
+function mapStateToProps({ users, question, authedUser }) {
+    return {
+        users,
+        questionList: Object.keys(question)
+            .sort((a, b) => question[b].timestamp - question[a].timestamp)
+            .filter(key => !Object.keys(users[authedUser].answers).map(key => key).includes(key)),
+        question
+    }
+}
+
+export default connect(mapStateToProps)(Questions)

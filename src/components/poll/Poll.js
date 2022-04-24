@@ -8,14 +8,13 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Radio from '@mui/material/Radio';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 
 import { handleSubmitAnswer } from '../../actions/question'
 
-function Poll({ users, question, authedUser, qid, dispatch }) {
-    const [answer, setAnswer] = useState('optionTwo')
+function Poll({ users, question, authedUser, qid, dispatch, optionOne, optionTwo }) {
+    const [answer, setAnswer] = useState('optionOne')
     const [answered, setAnswered] = useState(false)
 
     const userId = question[qid].author
@@ -38,30 +37,36 @@ function Poll({ users, question, authedUser, qid, dispatch }) {
                         <b>{`Asked by ${users[userId].name}`}</b>
                         <Divider />
                         <Grid container direction='row' sx={{ padding: 1 }} alignItems='center'>
-                            <Grid item xs={4}>
+                            <Grid item xs={3}>
                                 <Avatar
                                     alt={users[userId].name}
                                     src={users[userId].avatarURL}
-                                    sx={{ width: 60, height: 60 }}
+                                    sx={{ width: 70, height: 70 }}
                                 />
 
                             </Grid>
-                            <Grid container item direction='column' xs={8}>
+                            <Grid container item direction='column' xs={9}>
                                 <Grid item>
                                     <b>Results:</b>
                                 </Grid>
 
                                 <Grid container>
-                                    <Grid item>
-                                        <span>{question[qid].optionOne.text}</span>
+                                    <Box
+                                        sx={{ padding: '2px', border: answer === 'optionOne' && 'solid', borderColor: answer === 'optionOne' && 'green' }}>
+                                        <span>{optionOne.text}</span>
                                         <br />
-                                        <span><b>{question[qid].optionOne.votes.length} out of {question[qid].optionOne.votes.length + question[qid].optionTwo.votes.length} votes</b></span>
-                                    </Grid>
-                                    <Grid>
-                                        <span>{question[qid].optionTwo.text}</span>
+                                        <span>{(optionOne.votes.length * 100) / (optionOne.votes.length + optionTwo.votes.length)}% voted</span>
                                         <br />
-                                        <span><b>{question[qid].optionTwo.votes.length} out of {question[qid].optionOne.votes.length + question[qid].optionTwo.votes.length} votes</b></span>
-                                    </Grid>
+                                        <span><b>{optionOne.votes.length} out of {optionOne.votes.length + optionTwo.votes.length} votes</b></span>
+                                    </Box>
+                                    <Box
+                                        sx={{ padding: '2px', border: answer === 'optionTwo' && 'solid', borderColor: answer === 'optionTwo' && 'green' }}>
+                                        <span>{optionTwo.text}</span>
+                                        <br />
+                                        <span>{(optionTwo.votes.length * 100) / (optionOne.votes.length + optionTwo.votes.length)}% voted</span>
+                                        <br />
+                                        <span><b>{optionTwo.votes.length} out of {optionOne.votes.length + optionTwo.votes.length} votes</b></span>
+                                    </Box>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -92,8 +97,8 @@ function Poll({ users, question, authedUser, qid, dispatch }) {
                                             value={answer}
                                             onChange={(event) => setAnswer(event.target.value)}
                                         >
-                                            <FormControlLabel value="optionOne" control={<Radio />} label={question[qid].optionOne.text} />
-                                            <FormControlLabel value="optionTwo" control={<Radio />} label={question[qid].optionTwo.text} />
+                                            <FormControlLabel value="optionOne" control={<Radio />} label={optionOne.text} />
+                                            <FormControlLabel value="optionTwo" control={<Radio />} label={optionTwo.text} />
                                         </RadioGroup>
                                     </FormControl>
                                 </Grid>
@@ -111,13 +116,19 @@ function Poll({ users, question, authedUser, qid, dispatch }) {
                     </Box>
                 )
             }
-        </Grid>
+        </Grid >
     )
 }
 
-export default connect((state, qid) => ({
-    users: state.users,
-    question: state.question,
-    authedUser: state.authedUser,
-    ...qid
-}))(Poll)
+function mapStateToProps({ users, question, authedUser, qid }) {
+    return {
+        users,
+        question,
+        authedUser,
+        qid,
+        optionOne: question[qid].optionOne,
+        optionTwo: question[qid].optionTwo,
+    }
+}
+
+export default connect(mapStateToProps)(Poll)

@@ -4,17 +4,9 @@ import { connect } from "react-redux";
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import Radio from '@mui/material/Radio';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import RadioGroup from '@mui/material/RadioGroup';
 
-function AnsweredQuestions({ users, question, authedUser }) {
-    const questionList = Object.keys(question).filter(key => Object.keys(users[authedUser].answers).map(key => key).includes(key))
-
+function AnsweredQuestions({ users, question, questionList }) {
     return (
         <Grid container direction='column' sx={{ rowGap: 2 }} >
             {questionList.map(qid => {
@@ -31,7 +23,7 @@ function AnsweredQuestions({ users, question, authedUser }) {
                                     sx={{ width: 60, height: 60 }}
                                 />
                             </Grid>
-                            
+
                             <Grid container item xs={10}>
                                 <Grid item>
                                     <b>Results:</b>
@@ -59,8 +51,15 @@ function AnsweredQuestions({ users, question, authedUser }) {
     )
 }
 
-export default connect((state) => ({
-    users: state.users,
-    authedUser: state.authedUser,
-    question: state.question
-}))(AnsweredQuestions)
+function mapStateToProps({ users, authedUser, question }) {
+    Object.keys(question).sort((a, b) => question[b].timestamp - question[a].timestamp)
+    return {
+        users,
+        questionList: Object.keys(question)
+            .sort((a, b) => question[b].timestamp - question[a].timestamp)
+            .filter(key => Object.keys(users[authedUser].answers).map(key => key).includes(key)),
+        question
+    }
+}
+
+export default connect(mapStateToProps)(AnsweredQuestions)
