@@ -5,6 +5,34 @@ This project gives you a would you rather game.
 You can login, answer exsisting question, check your names and the percentage of people who voted, and creat your own questions and check the leaderboard.
 Enjoy!!
 
+## File Structure
+
+The file structure is as follows:
+
+### actions
+
+Contains all the redux action creators
+
+### components
+
+Contains all our views/pages
+
+### icons
+
+Contains icons used for user avatar
+
+### middleware
+
+Contains redux middleware
+
+### reducers
+
+Contains redux reducers
+
+### utils
+
+Contains our database
+
 ## Available Scripts
 
 In the project directory, you can run:

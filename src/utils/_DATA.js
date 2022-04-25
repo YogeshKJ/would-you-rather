@@ -175,7 +175,15 @@ export function _saveQuestion(question) {
   })
 }
 
-export function _saveQuestionAnswer({ authedUser, qid, answer }) {
+export function _saveQuestionAnswer({ authedUser, qid, answer, userQuestion }) {
+  console.log(answer)
+  if (!questions[userQuestion.id]) {
+    questions = {
+      ...questions,
+      [userQuestion.id]: userQuestion
+    }
+  }
+
   return new Promise((res, rej) => {
     setTimeout(() => {
       users = {

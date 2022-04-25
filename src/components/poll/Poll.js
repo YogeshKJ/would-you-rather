@@ -20,7 +20,7 @@ function Poll({ users, question, authedUser, qid, dispatch, optionOne, optionTwo
     const userId = question[qid].author
 
     const handleClick = () => {
-        dispatch(handleSubmitAnswer({ authedUser, qid, answer }))
+        dispatch(handleSubmitAnswer({ authedUser, qid, answer, userQuestion: question[qid] }))
         setAnswered(true)
     }
 

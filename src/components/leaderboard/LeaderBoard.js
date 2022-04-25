@@ -68,8 +68,9 @@ function LeaderBoard({ users, keys }) {
 function mapStateToProps({ users }) {
     return {
         users,
-        keys: Object.keys(users).sort((a, b) => (users[b].questions.length + Object.keys(users[b].answers).length) -
-            (users[b].questions.length + Object.keys(users[a].answers).length))
+        keys: Object.keys(users)
+            .sort((a, b) => (users[b].questions.length + Object.keys(users[b].answers).length) -
+                (users[a].questions.length + Object.keys(users[a].answers).length))
     }
 }
 
